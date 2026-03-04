@@ -4,6 +4,7 @@ import argparse
 import json
 
 from .analyzer import analyze_repo
+from .html_report import render_html
 
 
 def _md(report: dict) -> str:
@@ -29,14 +30,19 @@ def main() -> int:
 
     scan = sub.add_parser("scan", help="Scan a GitHub repo (owner/name)")
     scan.add_argument("repo", help="GitHub repo slug, e.g. owner/repo")
-    scan.add_argument("--format", choices=["json", "markdown"], default="markdown")
+    scan.add_argument("--format", choices=["json", "markdown", "html"], default="markdown")
     scan.add_argument("--out", help="Optional output file path")
 
     args = parser.parse_args()
 
     if args.command == "scan":
         report = analyze_repo(args.repo).to_dict()
-        output = json.dumps(report, indent=2) if args.format == "json" else _md(report)
+        if args.format == "json":
+            output = json.dumps(report, indent=2)
+        elif args.format == "html":
+            output = render_html(report)
+        else:
+            output = _md(report)
         if args.out:
             with open(args.out, "w", encoding="utf-8") as f:
                 f.write(output)

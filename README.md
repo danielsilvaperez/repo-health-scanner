@@ -19,8 +19,11 @@ PYTHONPATH=src python -m repo_health_scanner scan danielsilvaperez/resume-genera
 # JSON report
 PYTHONPATH=src python -m repo_health_scanner scan danielsilvaperez/resume-generator --format json
 
-# Save report
+# Save markdown report
 PYTHONPATH=src python -m repo_health_scanner scan danielsilvaperez/resume-generator --out report.md
+
+# Save HTML dashboard report
+PYTHONPATH=src python -m repo_health_scanner scan danielsilvaperez/resume-generator --format html --out report.html
 ```
 
 ## Example output
